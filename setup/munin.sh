@@ -60,7 +60,7 @@ done
 mkdir -p /var/lib/munin-node/plugin-state/
 
 # Restart services.
-restart_service munin
+# restart_service munin
 restart_service munin-node
 
 # generate initial statistics so the directory isn't empty
