@@ -50,6 +50,10 @@ if [ ! -f "$STORAGE_ROOT/mail/dkim/mail.private" ]; then
 	opendkim-genkey -b 2048 -r -s mail -D $STORAGE_ROOT/mail/dkim
 fi
 
+# The default/opendkim has another socket definition that overrides 
+# any definition in the opendkim.conf
+tools/editconf.py /etc/default/opendkim  'SOCKET=inet:8891@127.0.0.1'
+
 # Ensure files are owned by the opendkim user and are private otherwise.
 chown -R opendkim:opendkim $STORAGE_ROOT/mail/dkim
 chmod go-rwx $STORAGE_ROOT/mail/dkim
