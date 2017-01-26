@@ -76,7 +76,8 @@ tools/editconf.py /etc/postfix/main.cf \
 	milter_default_action=accept
 
 # Restart services.
+touch /etc/opendkim/SigningTable
+touch /etc/opendkim/KeyTable
 restart_service opendkim
 restart_service opendmarc
 restart_service postfix
-
