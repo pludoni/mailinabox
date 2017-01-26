@@ -125,6 +125,7 @@ tools/web_update
 
 # Give fail2ban another restart. The log files may not all have been present when
 # fail2ban was first configured, but they should exist now.
+touch /var/log/mail.warn
 restart_service fail2ban
 
 # If DNS is already working, try to provision TLS certficates from Let's Encrypt.
