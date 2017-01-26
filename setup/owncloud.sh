@@ -11,8 +11,8 @@ echo "Installing ownCloud (contacts/calendar)..."
 
 apt_install \
 	dbconfig-common \
-	php5-cli php5-sqlite php5-gd php5-imap php5-curl php-pear php-apc curl libapr1 libtool libcurl4-openssl-dev php-xml-parser \
-	php5 php5-dev php5-gd php5-fpm memcached php5-memcached
+	php7.0-cli php7.0-sqlite php7.0-gd php7.0-imap php7.0-curl php-pear php-apc curl libapr1 libtool libcurl4-openssl-dev php-xml-parser \
+	php7.0 php7.0-dev php7.0-gd php7.0-fpm memcached php7.0-memcached
 
 apt-get purge -qq -y owncloud*
 
@@ -92,7 +92,7 @@ if [ ! -d /usr/local/lib/owncloud/ ] \
         || ! grep -q $owncloud_ver /usr/local/lib/owncloud/version.php; then
 
 	# Stop php-fpm
-	hide_output service php5-fpm stop
+	hide_output service php7.0-fpm stop
 
         # Backup the existing ownCloud.
 	# Create a backup directory to store the current installation and database to
@@ -273,7 +273,7 @@ if [ \( $? -ne 0 \) -a \( $? -ne 3 \) ]; then exit 1; fi
 
 # Set PHP FPM values to support large file uploads
 # (semicolon is the comment character in this file, hashes produce deprecation warnings)
-tools/editconf.py /etc/php5/fpm/php.ini -c ';' \
+tools/editconf.py /etc/php/7.0/fpm/php.ini -c ';' \
 	upload_max_filesize=16G \
 	post_max_size=16G \
 	output_buffering=16384 \
@@ -282,8 +282,8 @@ tools/editconf.py /etc/php5/fpm/php.ini -c ';' \
 	short_open_tag=On
 
 # If apc is explicitly disabled we need to enable it
-if grep -q apc.enabled=0 /etc/php5/mods-available/apcu.ini; then
-	tools/editconf.py /etc/php5/mods-available/apcu.ini -c ';' \
+if grep -q apc.enabled=0 /etc/php/7.0/mods-available/apcu.ini; then
+	tools/editconf.py /etc/php/7.0/mods-available/apcu.ini -c ';' \
 		apc.enabled=1
 fi
 
@@ -305,5 +305,5 @@ chmod +x /etc/cron.hourly/mailinabox-owncloud
 # ```
 
 # Enable PHP modules and restart PHP.
-php5enmod imap
-restart_service php5-fpm
+phpenmod imap
+restart_service php7.0-fpm
