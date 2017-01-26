@@ -11,8 +11,8 @@ echo "Installing ownCloud (contacts/calendar)..."
 
 apt_install \
 	dbconfig-common \
-	php7.0-cli php7.0-sqlite php7.0-gd php7.0-imap php7.0-curl php-pear php-apc curl libapr1 libtool libcurl4-openssl-dev php-xml-parser \
-	php7.0 php7.0-dev php7.0-gd php7.0-fpm memcached php7.0-memcached
+	php7.0-cli php7.0-sqlite php7.0-gd php7.0-imap php7.0-curl php-pear php-apcu curl libapr1 libtool libcurl4-openssl-dev php-xml-parser \
+	php7.0 php7.0-dev php7.0-gd php7.0-fpm memcached php-memcached php-zip
 
 apt-get purge -qq -y owncloud*
 
