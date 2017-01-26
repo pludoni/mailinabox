@@ -18,7 +18,7 @@ fi
 # Turn off nginx's default website.
 
 echo "Installing Nginx (web server)..."
-apt_install nginx php5-fpm
+apt_install nginx php7.0-fpm
 
 rm -f /etc/nginx/sites-enabled/default
 
@@ -40,15 +40,15 @@ tools/editconf.py /etc/nginx/nginx.conf -s \
 	server_names_hash_bucket_size="128;"
 
 # Tell PHP not to expose its version number in the X-Powered-By header.
-tools/editconf.py /etc/php5/fpm/php.ini -c ';' \
+tools/editconf.py /etc/php/7.0/fpm/php.ini -c ';' \
 	expose_php=Off
 
 # Set PHPs default charset to UTF-8, since we use it. See #367.
-tools/editconf.py /etc/php5/fpm/php.ini -c ';' \
+tools/editconf.py /etc/php/7.0/fpm/php.ini -c ';' \
         default_charset="UTF-8"
 
 # Bump up PHP's max_children to support more concurrent connections
-tools/editconf.py /etc/php5/fpm/pool.d/www.conf -c ';' \
+tools/editconf.py /etc/php/7.0/fpm/pool.d/www.conf -c ';' \
 	pm.max_children=8
 
 # Other nginx settings will be configured by the management service
@@ -87,12 +87,12 @@ fi
 chown -R $STORAGE_USER $STORAGE_ROOT/www
 
 # We previously installed a custom init script to start the PHP FastCGI daemon. #NODOC
-# Remove it now that we're using php5-fpm. #NODOC
+# Remove it now that we're using php7.0-fpm. #NODOC
 if [ -L /etc/init.d/php-fastcgi ]; then
-	echo "Removing /etc/init.d/php-fastcgi, php5-cgi..." #NODOC
+	echo "Removing /etc/init.d/php-fastcgi, php7.0-cgi..." #NODOC
 	rm -f /etc/init.d/php-fastcgi #NODOC
 	hide_output update-rc.d php-fastcgi remove #NODOC
-	apt-get -y purge php5-cgi #NODOC
+	apt-get -y purge php7.0-cgi #NODOC
 fi
 
 # Remove obsoleted scripts. #NODOC
@@ -103,7 +103,7 @@ done #NODOC
 
 # Start services.
 restart_service nginx
-restart_service php5-fpm
+restart_service php7.0-fpm
 
 # Open ports.
 ufw_allow http
