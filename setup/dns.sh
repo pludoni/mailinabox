@@ -134,3 +134,10 @@ chmod +x /etc/cron.daily/mailinabox-dnssec
 
 ufw_allow domain
 
+# if IPv6 is defined, also define ipv6 localhost for bind, otherwise bind will
+# steal the udp port from nsd
+if [ -n "$PRIVATE_IPV6" ]; then
+	tools/editconf.py /etc/bind/named.conf.options -c '//' -s 'listen-on-v6={ ::1; };'
+	restart_service bind9
+	restart_service nsd
+fi
